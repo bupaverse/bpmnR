@@ -1,0 +1,16 @@
+Package: bpmnR
+Type: Package
+Title: Support for BPMN models
+Version: 0.1.0
+Authors@R: c(person("Alessio", "Nigro", email = "alessionigro@hotmail.com", role = "aut"),
+             person("Gert", "Janssenswillen", email = "gert.janssenswillen@uhasselt.be", role = "cre"))
+Description: ???
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.1.1
+Depends: R(>= 3.0.0)
+Imports: DiagrammeR, DiagrammeRsvg, dplyr, htmltools, htmlwidgets, purrr, rvest, tidyr, uuid, xml2, DT, assertive, htmltidy, huxtable, rlang, knitr
+VignetteBuilder: knitr
+Suggests: 
+    rmarkdown
