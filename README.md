@@ -1,7 +1,7 @@
 # bpmnR
 
 - [x] task 1: make sure package can be installed
-- [ ] task 2: what inputs does __create_bpmn()__ expect
+- [ ] task 2: what inputs does _create_bpmn()_ expect
 - [ ] task 3: 
 
 ## Task 2
