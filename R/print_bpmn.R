@@ -9,7 +9,6 @@
 #' @import htmltools
 #' @importFrom assertive is_empty
 #' @importFrom DT datatable
-#' @importFrom htmltidy xml_view
 #' @importFrom huxtable as_hux
 #' @importFrom huxtable everywhere
 #' @importFrom huxtable print_screen
@@ -24,7 +23,7 @@
 #'
 #' @rdname print
 #' @export
-print.bpmn <- function(x, ..., view_xml = FALSE) {
+print.bpmn <- function(x, ...) {
   # Defines options used to omit whitespace that would normally be written around HTML tags
   noWS <-
     c("before",
@@ -78,12 +77,6 @@ print.bpmn <- function(x, ..., view_xml = FALSE) {
 
       # Increases table number by one
       table_number <- table_number + 1
-    } else if (view_xml && bpmn_element == "xml") {
-      # Prints XML part of BPMN object in the console
-      print(x[[bpmn_element]])
-
-      # Pretty prints XML part of BPMN object in an htmlwidget pane
-      print(xml_view(x[[bpmn_element]], style = "googlecode"))
     }
   }
 }
