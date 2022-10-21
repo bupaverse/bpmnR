@@ -1,8 +1,9 @@
 # ============================== MAIN FUNCTION =================================
-
-#' @param view_xml Print XML part of BPMN object in the console and also
-#'   "pretty print" it in an htmlwidget pane. The default is FALSE, which results
-#'   in not printing the XML part of the BPMN object.
+#' Print xml part of bpmn
+#'
+#' @param x A bpmn object from create_bpmn function
+#' @param ... Any additional arguments
+#'
 #'
 #' @author Alessio Nigro
 #'
@@ -23,7 +24,7 @@
 #'
 #' @rdname print
 #' @export
-print.bpmn <- function(x, ...) {
+print_bpmn <- function(x, ...) {
   # Defines options used to omit whitespace that would normally be written around HTML tags
   noWS <-
     c("before",

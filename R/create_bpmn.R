@@ -17,7 +17,7 @@
 #'
 #' @author Alessio Nigro
 #'
-#' @import purrr
+#' @importFrom purrr compose
 #' @importFrom assertive assert_is_data.frame
 #' @importFrom assertive is_non_empty
 #' @importFrom knitr combine_words
