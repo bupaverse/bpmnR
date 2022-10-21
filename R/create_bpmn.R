@@ -17,7 +17,13 @@
 #'
 #' @author Alessio Nigro
 #'
+#' @importFrom purrr imap
+#' @importFrom purrr keep
+#' @importFrom purrr transpose
+#' @importFrom purrr map
+#' @importFrom purrr map_lgl
 #' @importFrom purrr compose
+#' @importFrom purrr as_mapper
 #' @importFrom assertive assert_is_data.frame
 #' @importFrom assertive is_non_empty
 #' @importFrom knitr combine_words
