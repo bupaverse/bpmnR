@@ -30,6 +30,4 @@ applications and interactive Rmd documents.
 }
 \author{
 Alessio Nigro
-
-Alessio Nigro
 }
