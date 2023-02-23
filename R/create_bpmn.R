@@ -40,11 +40,11 @@ create_bpmn <-
     bpmn <- as.list(environment())
 
     # Checks if arguments are data.frames
-    assert_is_data.frame(tasks)
-    assert_is_data.frame(sequenceFlows)
-    assert_is_data.frame(gateways)
-    assert_is_data.frame(startEvent)
-    assert_is_data.frame(endEvent)
+    assertive::assert_is_any_of(tasks, c("data.frame", "tbl_df"))           # assert_is_data.frame(tasks)
+    assertive::assert_is_any_of(sequenceFlows, c("data.frame", "tbl_df"))   # assert_is_data.frame(sequenceFlows)
+    assertive::assert_is_any_of(gateways, c("data.frame", "tbl_df"))        # assert_is_data.frame(gateways)
+    assertive::assert_is_any_of(startEvent, c("data.frame", "tbl_df"))      # assert_is_data.frame(startEvent)
+    assertive::assert_is_any_of(endEvent, c("data.frame", "tbl_df"))        # assert_is_data.frame(endEvent)
 
     # Defines every data structure that can be changed
     singular_of_bpmn_elements <- list(
