@@ -83,7 +83,12 @@ create_bpmn <-
 
     # Converts all values to character type
     for (element in names(bpmn)) {
-      bpmn[[element]][] <- sapply(bpmn[[element]], as.character)
+      tmp <- sapply(bpmn[[element]], as.character)
+      if(is.null(dim(tmp)))
+        bpmn[[element]][] <- tmp %>% as.matrix %>% t
+      else
+        bpmn[[element]][] <- tmp
+
     }
 
     # Converts certain attributes to a factor

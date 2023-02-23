@@ -3,6 +3,7 @@
 S3method(create_xml,bpmn)
 S3method(render_bpmn,bpmn)
 S3method(write_bpmn,bpmn)
+export(calculate_CFC)
 export(create_bpmn)
 export(create_xml)
 export(print_bpmn)
