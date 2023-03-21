@@ -23,13 +23,13 @@ calculate_CFC <- function(bpmn) {
 
   output <- list_along(gw_types)
 
-  for(i in 1:gw_types)
+  for(i in 1:length(gw_types))
 
   if (gw_types[i] == "ExclusiveGateway") {
     n_splits <- gateways_as_source %>%
       filter(gatewayType == gw_types[i]) %>%
       group_by(id) %>% count()
-    cfc <- n_splits %>% pull(n) %>% sum()
+    output[i] <- n_splits %>% pull(n) %>% sum()
   }
 
   else if (gw_types[i] == "InclusiveGateway") {
@@ -37,18 +37,18 @@ calculate_CFC <- function(bpmn) {
       filter(gatewayType == gw_types[i]) %>%
       group_by(id) %>%
       count()
-    cfc <- n_splits %>% mutate(cfc_OR = 2**n - 1) %>% pull(cfc_OR) %>% sum()
-    print(paste0("2^n - 1: ", "\n"))
-    print(n_splits %>% mutate(cfc_OR = 2**n - 1))
+    output[i] <- n_splits %>% mutate(cfc_OR = 2**n - 1) %>% pull(cfc_OR) %>% sum()
+    # print(paste0("2^n - 1: ", "\n"))
+    # print(n_splits %>% mutate(cfc_OR = 2**n - 1))
   }
 
   else if (gw_types[i] == "ParallelGateway") {
-    cfc <- gateways_as_source %>%
+    output[i] <- gateways_as_source %>%
       filter(gatewayType == gw_types[i]) %>%
       n_distinct()
   }
 
-  return(output)
+  return(sum(unlist(output)))
 }
 
 # gw <- tmp$gateways

@@ -397,6 +397,18 @@ create_xml.bpmn <- function(bpmn, ...) {
           bpmn_shape_widths
         ))) / 2
       )
+
+    # bpmn$sequenceFlows %>%
+    #   select(sourceRef, targetRef) %>%
+    #   as.matrix() %>%
+    #   igraph::graph_from_edgelist() %>%
+    #   get_layout() %>%
+    #   select(id = node, x = x_offsetnode, y = y_offsetnode) %>%
+    #   mutate(across(c(x,y), ~.x*1000)) %>%
+    #   mutate(y = abs(y)) %>%
+    #   filter(!str_detect(id, "block_")) %>%
+    #   filter(!id %in% c("START","END_1")) %>%
+    #   as.data.frame()
   }
 
 # Creates "Bounds" node as a child from "BPMNPShape" node
