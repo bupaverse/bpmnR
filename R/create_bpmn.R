@@ -46,6 +46,13 @@ create_bpmn <-
     assertive::assert_is_any_of(startEvent, c("data.frame", "tbl_df"))      # assert_is_data.frame(startEvent)
     assertive::assert_is_any_of(endEvent, c("data.frame", "tbl_df"))        # assert_is_data.frame(endEvent)
 
+    tasks <- as.data.frame(tasks)
+    sequenceFlow <- as.data.frame(sequenceFlows)
+    gateways <- as.data.frame(gateways)
+    startEvent <- as.data.frame(startEvent)
+    endEvent <- as.data.frame(endEvent)
+
+
     # Defines every data structure that can be changed
     singular_of_bpmn_elements <- list(
       tasks = "task",
@@ -108,7 +115,7 @@ create_bpmn <-
     bpmn[["xml"]] <- create_xml(bpmn)
 
     # Prints BPMN object without the XML document
-    print(bpmn, view_xml = FALSE)
+    # print(bpmn, view_xml = FALSE)
 
     return(bpmn)
   }
