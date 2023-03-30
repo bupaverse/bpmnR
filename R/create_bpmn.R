@@ -30,89 +30,94 @@
 #'
 #' @export
 create_bpmn <-
-  function(tasks,
-           sequenceFlows,
-           gateways,
-           startEvent,
-           endEvent,
-           ...) {
+  function(nodes,
+           flows,
+           events) {
     # Stores arguments of create_bpmn as a list of data.frames
     bpmn <- as.list(environment())
 
-    # Checks if arguments are data.frames
-    assertive::assert_is_any_of(tasks, c("data.frame", "tbl_df"))           # assert_is_data.frame(tasks)
-    assertive::assert_is_any_of(sequenceFlows, c("data.frame", "tbl_df"))   # assert_is_data.frame(sequenceFlows)
-    assertive::assert_is_any_of(gateways, c("data.frame", "tbl_df"))        # assert_is_data.frame(gateways)
-    assertive::assert_is_any_of(startEvent, c("data.frame", "tbl_df"))      # assert_is_data.frame(startEvent)
-    assertive::assert_is_any_of(endEvent, c("data.frame", "tbl_df"))        # assert_is_data.frame(endEvent)
+    node_types <- c("task", #id name
+                    "userTask",
+                    "manualTask",
+                    "serviceTask",
+                    "exclusiveGateway", #gatewayDirection
+                    "inclusiveGateway",
+                    "parallelGateway")
 
-    tasks <- as.data.frame(tasks)
-    sequenceFlow <- as.data.frame(sequenceFlows)
-    gateways <- as.data.frame(gateways)
-    startEvent <- as.data.frame(startEvent)
-    endEvent <- as.data.frame(endEvent)
+    event_types <- c("startEvent",
+                     "endEvent",
+                     "messageStartEvent", #messageEventDefinition
+                     "messageEndEvent",
+                     "timerStartEvent", #timerEventDefinition
+                     "terminateEndEvent", #terminateEventDefinition
+                     "boundaryEvent") #attachedToRef
+
+    flow_types <- c("sequenceFlow", #id name sourceRef targetRef
+                    "messageFlow")
+
+
+
+    # Checks if arguments are data.frames
+    assertive::assert_is_any_of(nodes, c("data.frame", "tbl_df"))           # assert_is_data.frame(tasks)
+    assertive::assert_is_any_of(events, c("data.frame", "tbl_df"))   # assert_is_data.frame(sequenceFlows)
+    assertive::assert_is_any_of(flows, c("data.frame", "tbl_df"))        # assert_is_data.frame(gateways)
+
+    nodes <- as.data.frame(nodes)
+    events <- as.data.frame(events)
+    flows <- as.data.frame(flows)
 
 
     # Defines every data structure that can be changed
-    singular_of_bpmn_elements <- list(
-      tasks = "task",
-      sequenceFlows = "sequenceFlow",
-      gateways = "gateway",
-      startEvent = "startEvent",
-      endEvent = "endEvent"
-    )
-    minimal_subset_attributes_list <-
-      list(
-        tasks = c("id", "name"),
-        sequenceFlows = c("id", "name", "sourceRef", "targetRef"),
-        gateways = c("id", "name", "gatewayType", "gatewayDirection"),
-        startEvent = c("id", "name"),
-        endEvent = c("id", "name")
-      )
-    elements_empty_allowed <- c("gateways")
-    attributes_to_factors <- c("gatewayType", "gatewayDirection")
+    # minimal_subset_attributes_list <-
+    #   list(
+    #     tasks = c("id", "name", "objecttype"),
+    #     sequenceFlows = c("id", "name", "objecttype", "sourceRef", "targetRef"),
+    #     gateways = c("id", "name", "objecttype", "gatewayDirection"),
+    #     events = c("id", "name", "objecttype"),
+    #   )
+    # attributes_to_factors <- c("gatewayDirection")
 
     # Checks for empty data.frames
-    bpmn %>%
-      .check.for.empty.data.frames(elements_empty_allowed = elements_empty_allowed)
+    # bpmn %>%
+    #   .check.for.empty.data.frames(elements_empty_allowed = elements_empty_allowed)
 
     # Checks per BPMN element if required attributes are present
-    bpmn %>%
-      .check.for.minimal.subset.attributes(
-        minimal_subset_attributes_list = minimal_subset_attributes_list,
-        singular_of_bpmn_elements = singular_of_bpmn_elements
-      )
-
+    # bpmn %>%
+    #   .check.for.minimal.subset.attributes(
+    #     minimal_subset_attributes_list = minimal_subset_attributes_list,
+    #     singular_of_bpmn_elements = singular_of_bpmn_elements
+    #   )
+    # for (element in names(bpmn)) {
+    #   for (attribute in names(bpmn[[element]])) {
+    #     if (attribute %in% attributes_to_factors) {
+    #       bpmn[[element]][, attribute] <-
+    #         as.factor(bpmn[[element]][, attribute])
+    #     }
+    #   }
+    # }
     # Converts missing values in data.frames to empty string
-    for (element in names(bpmn)) {
-      bpmn[[element]][is.na(bpmn[[element]])] <- ""
-    }
+    # for (element in names(bpmn)) {
+    #   bpmn[[element]][is.na(bpmn[[element]])] <- ""
+    # }
 
     # Converts all values to character type
-    for (element in names(bpmn)) {
-      tmp <- sapply(bpmn[[element]], as.character)
-      if(is.null(dim(tmp)))
-        bpmn[[element]][] <- tmp %>% as.matrix %>% t
-      else
-        bpmn[[element]][] <- tmp
-
-    }
+    # for (element in names(bpmn)) {
+    #   tmp <- sapply(bpmn[[element]], as.character)
+    #   if(is.null(dim(tmp)))
+    #     bpmn[[element]][] <- tmp %>% as.matrix %>% t
+    #   else
+    #     bpmn[[element]][] <- tmp
+    #
+    # }
 
     # Converts certain attributes to a factor
-    for (element in names(bpmn)) {
-      for (attribute in names(bpmn[[element]])) {
-        if (attribute %in% attributes_to_factors) {
-          bpmn[[element]][, attribute] <-
-            as.factor(bpmn[[element]][, attribute])
-        }
-      }
-    }
+
 
     # Sets class attribute to "bpmn"
     class(bpmn) <- "bpmn"
 
     # Creates XML document from BPMN object and attaches this XML document to the BPMN object
-    bpmn[["xml"]] <- create_xml(bpmn)
+    bpmn[["xml"]] <- create_xml2(bpmn)
 
     # Prints BPMN object without the XML document
     # print(bpmn, view_xml = FALSE)

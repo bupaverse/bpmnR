@@ -22,16 +22,18 @@ get_blocks <- function(gr) {
 x_position <- function(node, gr, block_length, block_dimensions) {
 
   if(node %in% block_dimensions$block_id)
-    node_length <- block_dimensions %>% filter(block_id == node) %>% pull(length)
+    node_length <- block_dimensions %>% filter(block_id == node) %>% pull(length) + 1
   else
-    node_length <- 0
+    node_length <- 1
 
   if(length(neighbors(gr, node, mode = "out")) == 0) {
     return(block_length)
   } else if (length(neighbors(gr, node, mode = "out")) > 1) {
     return(1)
   } else{
-    return(x_position(neighbors(gr, node, mode = "out"), gr, block_length, block_dimensions)  - 1 - node_length)
+    follow <- names(neighbors(gr, node, mode = "out"))
+
+    return(x_position(follow, gr, block_length, block_dimensions)  - node_length)
   }
 }
 
@@ -39,7 +41,7 @@ x_position <- function(node, gr, block_length, block_dimensions) {
 y_position <- function(node, gr, block_dimensions) {
   neighbors(gr, node, mode = "out") -> n_out
   neighbors(gr, node, mode = "in") -> n_in
-  if(length(n_out) != 1) {
+  if(length(n_out) != 1 | length(n_in) == 0) {
     return(0)
   } else {
     if(length(neighbors(gr, n_in, mode = "out")) > 1) {
@@ -51,7 +53,7 @@ y_position <- function(node, gr, block_dimensions) {
                                             pull(width),
                                           1))
     offsets <- cumsum(branch_widths)
-    offsets[which(names(neighbors(gr, n_in, mode = "out")) == node)]
+    offsets[which(names(neighbors(gr, n_in, mode = "out")) == node)] + 0.5
 
     } else {
       y_position(names(n_in), gr, block_dimensions)

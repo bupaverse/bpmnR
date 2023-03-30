@@ -39,6 +39,15 @@ get_layout <- function(graph) {
     # print(block_dimensions)
     get_blocks(graph) -> blocks
   }
+  startpoint <- V(graph)[map_lgl(V(graph), ~length(neighbors(graph, .x, mode = "in")) == 0)]
+
+  graph_length <- get_graph_length(graph, startpoint, block_dimensions)
+
+  tibble(block_graph = list(graph), block_length = graph_length, block_activities = list(names(V(graph)))) %>%
+    get_block_positions(block_dimensions) %>%
+    mutate(block_id = "process") %>%
+    bind_rows(block_positions, .) -> block_positions
+
 
   block_positions %>%
     filter(node %in% block_positions$block_id) -> block_placements

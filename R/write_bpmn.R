@@ -23,9 +23,7 @@
 #' @export
 write_bpmn <- function(bpmn,
                        file,
-                       ...,
-                       options = "format",
-                       encoding = "UTF-8") {
+                       ...) {
   UseMethod("write_bpmn")
 }
 
@@ -33,15 +31,11 @@ write_bpmn <- function(bpmn,
 #' @export
 write_bpmn.bpmn <-
   function(bpmn,
-           file,
-           ...,
-           options = "format",
-           encoding = "UTF-8") {
-    if (inherits(bpmn[["xml"]], "xml_document")) {
-      write_xml(bpmn[["xml"]], file, ..., options = options, encoding = encoding)
+           file) {
+
+      write_file(bpmn[["xml"]], file)
 
       return(message(paste0(
-        "Successfully written file to '", file, "'.\n"
-      )))
-    }
+        "Successfully written file to '", file, "'.\n")))
+
   }
