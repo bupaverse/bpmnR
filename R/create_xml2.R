@@ -1,6 +1,4 @@
 
-library(bupaverse)
-library(pm4py)
 
 # patients %>% discover_inductive_bpmn(noise_threshold = 0.1) -> bpmn
 create_xml2 <- function(bpmn) {
