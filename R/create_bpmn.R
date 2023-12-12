@@ -5,12 +5,9 @@
 #' This creates a BPMN object by specifying a set of tasks, sequence flows,
 #' gateways, and a start and end event.
 #'
-#' @param tasks A data.frame of all tasks and their attributes.
-#' @param sequenceFlows A data.frame of all sequence flows and their attributes.
-#' @param gateways A data.frame of all gateways and their attributes.
-#' @param startEvent A data.frame containing the start event and its attributes.
-#' @param endEvent A data.frame containing the end event and its attributes.
-#' @param ... Additional arguments passed to methods.
+#' @param nodes A data.frame of all nodes, with minimal columns id, name, objectType, gatewayDirection
+#' @param events A data.frame of all events, with minimal columns id, name, objectType
+#' @param flows A data.frame of all flows, with minimal columns id, sourceRef, targetRef and objectType
 #'
 #' @return A BPMN object as a list of data.frames for the BPMN elements and an
 #'   XML document for the XML-based interchange format for the BPMN process.
@@ -24,9 +21,21 @@
 #' @importFrom purrr map_lgl
 #' @importFrom purrr compose
 #' @importFrom purrr as_mapper
-#' @importFrom assertive assert_is_data.frame
-#' @importFrom assertive is_non_empty
 #' @importFrom knitr combine_words
+#'
+#' @examples
+#'
+#' library(dplyr)
+#' nodes <- tibble(id = "task", name = "Task name",
+#' objectType = "task", gatewayDirection = NA)
+#' events <- tibble(id = c("start","end"), name = c("Start event","End event"),
+#' objectType = c("startEvent","endEvent"))
+#' flows <- tibble(id = c("flow1","flow2"), name = c("flow1","flow2"),
+#' sourceRef = c("start","task"), targetRef = c("task","end"),
+#' objectType = c("sequenceFlow","sequenceFlow"))
+#' create_bpmn(nodes, flows, events)
+#'
+#'
 #'
 #' @export
 create_bpmn <-
@@ -58,9 +67,9 @@ create_bpmn <-
 
 
     # Checks if arguments are data.frames
-    assertive::assert_is_any_of(nodes, c("data.frame", "tbl_df"))           # assert_is_data.frame(tasks)
-    assertive::assert_is_any_of(events, c("data.frame", "tbl_df"))   # assert_is_data.frame(sequenceFlows)
-    assertive::assert_is_any_of(flows, c("data.frame", "tbl_df"))        # assert_is_data.frame(gateways)
+    # assertive::assert_is_any_of(nodes, c("data.frame", "tbl_df"))           # assert_is_data.frame(tasks)
+    # assertive::assert_is_any_of(events, c("data.frame", "tbl_df"))   # assert_is_data.frame(sequenceFlows)
+    # assertive::assert_is_any_of(flows, c("data.frame", "tbl_df"))        # assert_is_data.frame(gateways)
 
     nodes <- as.data.frame(nodes)
     events <- as.data.frame(events)
@@ -117,7 +126,7 @@ create_bpmn <-
     class(bpmn) <- "bpmn"
 
     # Creates XML document from BPMN object and attaches this XML document to the BPMN object
-    bpmn[["xml"]] <- create_xml2(bpmn)
+    bpmn[["xml"]] <- create_xml(bpmn)
 
     # Prints BPMN object without the XML document
     # print(bpmn, view_xml = FALSE)
@@ -191,19 +200,19 @@ create_bpmn <-
   }
 
 # Checks per BPMN element if required attributes are present
-.check.for.minimal.subset.attributes <-
-  function(bpmn,
-           minimal_subset_attributes_list,
-           singular_of_bpmn_elements) {
-    bpmn %>%
-      map(~ names(.x)) %>%
-      keep(is_non_empty) %>%
-      imap(
-        ~ .compare.attributes(
-          .x,
-          .y,
-          minimal_subset_attributes_list,
-          singular_of_bpmn_elements
-        )
-      )
-  }
+# .check.for.minimal.subset.attributes <-
+#   function(bpmn,
+#            minimal_subset_attributes_list,
+#            singular_of_bpmn_elements) {
+#     bpmn %>%
+#       map(~ names(.x)) %>%
+#       keep(is_non_empty) %>%
+#       imap(
+#         ~ .compare.attributes(
+#           .x,
+#           .y,
+#           minimal_subset_attributes_list,
+#           singular_of_bpmn_elements
+#         )
+#       )
+#   }

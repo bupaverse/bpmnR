@@ -10,16 +10,11 @@
 #'   an XML document for the XML-based interchange format for the BPMN process.
 #' @param file Path to file or connection to write to.
 #' @param ... Additional arguments passed to methods.
-#' @param options default: \sQuote{format}. Zero or more of
-#' \Sexpr[results=rd]{xml2:::describe_options(xml2:::xml_save_options())}
-#' @param encoding The character encoding to use in the document. The default
-#' encoding is \sQuote{UTF-8}. Available encodings are specified at
-#' <http://xmlsoft.org/html/libxml-encoding.html#xmlCharEncoding>.
 #'
 #' @author Alessio Nigro
 #'
-#' @import xml2
-#'
+#' @importFrom readr write_file
+#' @return Writes file to system.
 #' @export
 write_bpmn <- function(bpmn,
                        file,
@@ -27,11 +22,12 @@ write_bpmn <- function(bpmn,
   UseMethod("write_bpmn")
 }
 
-#' @rdname write_bpmn
+#' @describeIn write_bpmn Write bpmn to .bpmn file
 #' @export
 write_bpmn.bpmn <-
   function(bpmn,
-           file) {
+           file,
+           ...) {
 
       write_file(bpmn[["xml"]], file)
 

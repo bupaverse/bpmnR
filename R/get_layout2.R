@@ -2,6 +2,10 @@
 
 get_layout2 <- function(flows) {
 
+  original_id <- NULL
+  x <- NULL
+  y <- NULL
+
   edges <- flows
 
   # Transforms edges to long format and gives each unique id a number from 1 to n_edges, using as.numeric(factor())

@@ -11,6 +11,9 @@ print_bpmn(x, ...)
 
 \item{...}{Any additional arguments}
 }
+\value{
+No return value, only print model.
+}
 \description{
 Print xml part of bpmn
 }

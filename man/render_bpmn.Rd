@@ -54,8 +54,25 @@ declaration. \sQuote{UTF-8} is the default encoding used.}
 
 \item{...}{Additional arguments passed to methods.}
 }
+\value{
+Rendered BPMN model in htmlwidget.
+}
 \description{
 This renders a BPMN diagram based on a BPMN object.
+}
+\examples{
+
+library(dplyr)
+nodes <- tibble(id = "task", name = "Task name",
+objectType = "task", gatewayDirection = NA)
+events <- tibble(id = c("start","end"), name = c("Start event","End event"),
+objectType = c("startEvent","endEvent"))
+flows <- tibble(id = c("flow1","flow2"), name = c("flow1","flow2"),
+sourceRef = c("start","task"), targetRef = c("task","end"),
+objectType = c("sequenceFlow","sequenceFlow"))
+model <- create_bpmn(nodes, flows, events)
+render_bpmn(model)
+
 }
 \author{
 Alessio Nigro

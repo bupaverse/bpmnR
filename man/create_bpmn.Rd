@@ -4,20 +4,14 @@
 \alias{create_bpmn}
 \title{Create BPMN object.}
 \usage{
-create_bpmn(tasks, sequenceFlows, gateways, startEvent, endEvent, ...)
+create_bpmn(nodes, flows, events)
 }
 \arguments{
-\item{tasks}{A data.frame of all tasks and their attributes.}
+\item{nodes}{A data.frame of all nodes, with minimal columns id, name, objectType, gatewayDirection}
 
-\item{sequenceFlows}{A data.frame of all sequence flows and their attributes.}
+\item{flows}{A data.frame of all flows, with minimal columns id, sourceRef, targetRef and objectType}
 
-\item{gateways}{A data.frame of all gateways and their attributes.}
-
-\item{startEvent}{A data.frame containing the start event and its attributes.}
-
-\item{endEvent}{A data.frame containing the end event and its attributes.}
-
-\item{...}{Additional arguments passed to methods.}
+\item{events}{A data.frame of all events, with minimal columns id, name, objectType}
 }
 \value{
 A BPMN object as a list of data.frames for the BPMN elements and an
@@ -26,6 +20,21 @@ A BPMN object as a list of data.frames for the BPMN elements and an
 \description{
 This creates a BPMN object by specifying a set of tasks, sequence flows,
 gateways, and a start and end event.
+}
+\examples{
+
+library(dplyr)
+nodes <- tibble(id = "task", name = "Task name",
+objectType = "task", gatewayDirection = NA)
+events <- tibble(id = c("start","end"), name = c("Start event","End event"),
+objectType = c("startEvent","endEvent"))
+flows <- tibble(id = c("flow1","flow2"), name = c("flow1","flow2"),
+sourceRef = c("start","task"), targetRef = c("task","end"),
+objectType = c("sequenceFlow","sequenceFlow"))
+create_bpmn(nodes, flows, events)
+
+
+
 }
 \author{
 Alessio Nigro

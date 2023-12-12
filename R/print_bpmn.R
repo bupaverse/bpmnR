@@ -8,7 +8,6 @@
 #' @author Alessio Nigro
 #'
 #' @import htmltools
-#' @importFrom assertive is_empty
 #' @importFrom DT datatable
 #' @importFrom huxtable as_hux
 #' @importFrom huxtable everywhere
@@ -22,6 +21,8 @@
 #' @importFrom huxtable set_outer_padding
 #' @importFrom huxtable style_headers
 #'
+#'
+#' @return No return value, only print model.
 #' @rdname print
 #' @export
 print_bpmn <- function(x, ...) {
@@ -39,7 +40,7 @@ print_bpmn <- function(x, ...) {
 
   # Prints BPMN object in the console and in an htmlwidget pane
   for (bpmn_element in names(x)) {
-    if (!is_empty(x[[bpmn_element]]) && bpmn_element != "xml") {
+    if (bpmn_element != "xml") {
       # Prints nicely formatted tables of BPMN elements in the console
       as_hux(x[[bpmn_element]]) %>%
         set_all_padding(4) %>%

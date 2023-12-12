@@ -16,4 +16,10 @@ Authors:
   \item Alessio Nigro \email{alessionigro@hotmail.com}
 }
 
+Other contributors:
+\itemize{
+  \item Ivan Esin [contributor]
+  \item Hasselt University [copyright holder]
+}
+
 }

@@ -2,13 +2,29 @@
 % Please edit documentation in R/calculate_CFC.R
 \name{calculate_CFC}
 \alias{calculate_CFC}
-\title{Title}
+\title{Control Flow Complexity (CFC) -------------------------------------------}
 \usage{
 calculate_CFC(bpmn)
 }
 \arguments{
-\item{bpmn}{}
+\item{bpmn}{bpmn-object.}
+}
+\value{
+Control-Flow-Complexity. Numeric vector of length 1
 }
 \description{
-Title
+Control Flow Complexity (CFC) -------------------------------------------
+}
+\examples{
+library(dplyr)
+nodes <- tibble(id = "task", name = "Task name", objectType = "task",
+gatewayDirection = NA)
+events <- tibble(id = c("start","end"), name = c("Start event","End event"),
+objectType = c("startEvent","endEvent"))
+flows <- tibble(id = c("flow1","flow2"), name = c("flow1","flow2"),
+sourceRef = c("start","task"), targetRef = c("task","end"),
+objectType = c("sequenceFlow","sequenceFlow"))
+model <- create_bpmn(nodes, flows, events)
+calculate_CFC(model)
+
 }
