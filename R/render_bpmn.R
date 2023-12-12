@@ -26,7 +26,21 @@
 #' @author Alessio Nigro
 #'
 #' @import htmlwidgets
-#' @import xml2
+#' @importFrom xml2 read_xml
+#' @return Rendered BPMN model in htmlwidget.
+#'
+#' @examples
+#'
+#' library(dplyr)
+#' nodes <- tibble(id = "task", name = "Task name",
+#' objectType = "task", gatewayDirection = NA)
+#' events <- tibble(id = c("start","end"), name = c("Start event","End event"),
+#' objectType = c("startEvent","endEvent"))
+#' flows <- tibble(id = c("flow1","flow2"), name = c("flow1","flow2"),
+#' sourceRef = c("start","task"), targetRef = c("task","end"),
+#' objectType = c("sequenceFlow","sequenceFlow"))
+#' model <- create_bpmn(nodes, flows, events)
+#' render_bpmn(model)
 #'
 #' @export
 render_bpmn <- function(bpmn,
@@ -110,7 +124,7 @@ render_bpmn.bpmn <-
 #'   is useful if you want to save an expression in a variable.
 #'
 #' @author Alessio Nigro
-#'
+#' @return Rendered BPMN model in Shiny widget.
 #' @name render_bpmn-shiny
 #'
 #' @export
@@ -123,6 +137,7 @@ render_bpmnOutput <-
 
 #' @author Alessio Nigro
 #'
+#' @return Rendered BPMN model in Shiny widget.
 #' @rdname render_bpmn-shiny
 #' @export
 renderRender_bpmn <-
