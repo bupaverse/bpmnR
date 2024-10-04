@@ -25,8 +25,7 @@ get_layout2 <- function(flows) {
     spread(.data$key, .data$node_id)
 
   # Uses "sourceRef" and "targetRef" (which are now simple ids from 1 till n) to build edge data.frame
-  edge_df <-
-    create_edge_df(from = edges$sourceRef, to = edges$targetRef)
+  edge_df <- create_edge_df(from = edges$sourceRef, to = edges$targetRef)
 
   # Creates node data.frame with correct number of nodes (which is the number of rows in "node_keys")
   node_df <- create_node_df(nrow(node_keys))
@@ -39,7 +38,7 @@ get_layout2 <- function(flows) {
     add_global_graph_attrs(attr = "layout",
                            value = "dot",
                            attr_type = "graph") %>%
-    render_graph(layout = "neato") %>%
+    render_graph() %>%
     export_svg()
 
   g_elements <- read_html(dot) %>%
